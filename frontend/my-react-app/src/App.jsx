@@ -1,40 +1,73 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Alert,
   Box,
   Button,
   Card,
   CardContent,
+  Checkbox,
   CircularProgress,
   Container,
   Divider,
+  FormControl,
+  InputLabel,
+  ListItemText,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import "./App.css";
 
-const initialFormValues = {
+const initialSearchValues = {
   q: "",
   author: "",
   year: "",
   category: "",
 };
 
+const initialFilterValues = {
+  categories: [],
+  yearFrom: "",
+  yearTo: "",
+};
+
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
 const booksEndpoint = apiBaseUrl ? `${apiBaseUrl}/books` : "/books";
+const categoryOptions = [
+  "Artificial Intelligence",
+  "Business",
+  "Computer Science",
+  "Fiction",
+  "Finance",
+  "Philosophy",
+  "Programming",
+  "Psychology",
+  "Self-Help",
+];
 
 function App() {
-  const [formValues, setFormValues] = useState(initialFormValues);
+  const [searchValues, setSearchValues] = useState(initialSearchValues);
+  const [filterValues, setFilterValues] = useState(initialFilterValues);
+  const [rawBooks, setRawBooks] = useState([]);
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
 
-  const handleChange = (event) => {
+  const handleSearchChange = (event) => {
     const { name, value } = event.target;
-    setFormValues((prev) => ({
+    setSearchValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+    setFilterValues((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -47,7 +80,7 @@ function App() {
     setHasSearched(true);
 
     const params = new URLSearchParams();
-    Object.entries(formValues).forEach(([key, value]) => {
+    Object.entries(searchValues).forEach(([key, value]) => {
       const trimmed = value.trim();
       if (trimmed) {
         params.append(key, trimmed);
@@ -65,22 +98,68 @@ function App() {
       }
 
       const payload = await response.json();
-      const nextBooks = Array.isArray(payload) ? payload : payload?.books ?? [];
-      setBooks(nextBooks);
+      const nextBooks =
+        (Array.isArray(payload) ? payload : payload?.books) ?? [];
+      setRawBooks(nextBooks);
     } catch (err) {
       setError(err.message ?? "Unexpected error occurred.");
-      setBooks([]);
+      setRawBooks([]);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleClear = () => {
-    setFormValues(initialFormValues);
+    setSearchValues(initialSearchValues);
+    setFilterValues(initialFilterValues);
+    setRawBooks([]);
     setBooks([]);
     setError("");
     setHasSearched(false);
   };
+
+  const handleCategoriesChange = (event) => {
+    const nextValue =
+      typeof event.target.value === "string"
+        ? event.target.value.split(",")
+        : event.target.value;
+    setFilterValues((prev) => ({
+      ...prev,
+      categories: nextValue,
+    }));
+  };
+
+  const filteredBooks = useMemo(() => {
+    if (!rawBooks.length) {
+      return [];
+    }
+
+    const parsedFrom = Number(filterValues.yearFrom);
+    const parsedTo = Number(filterValues.yearTo);
+    const hasYearFrom =
+      filterValues.yearFrom !== "" && !Number.isNaN(parsedFrom);
+    const hasYearTo = filterValues.yearTo !== "" && !Number.isNaN(parsedTo);
+    const selectedCategories = filterValues.categories.map((value) =>
+      value.toLowerCase()
+    );
+
+    return rawBooks.filter((book) => {
+      const bookYear = Number(book.year);
+      const matchesCategories =
+        selectedCategories.length === 0 ||
+        (typeof book.category === "string" &&
+          selectedCategories.includes(book.category.toLowerCase()));
+
+      const matchesYearFrom = !hasYearFrom || bookYear >= parsedFrom;
+      const matchesYearTo = !hasYearTo || bookYear <= parsedTo;
+
+      return matchesCategories && matchesYearFrom && matchesYearTo;
+    });
+  }, [rawBooks, filterValues]);
+
+  useEffect(() => {
+    setBooks(filteredBooks);
+  }, [filteredBooks]);
 
   const renderResults = () => {
     if (error) {
@@ -161,16 +240,16 @@ function App() {
               <TextField
                 label="Keyword"
                 name="q"
-                value={formValues.q}
-                onChange={handleChange}
+                value={searchValues.q}
+                onChange={handleSearchChange}
                 placeholder="Title, description, or ISBN"
                 fullWidth
               />
               <TextField
                 label="Author"
                 name="author"
-                value={formValues.author}
-                onChange={handleChange}
+                value={searchValues.author}
+                onChange={handleSearchChange}
                 fullWidth
                 helperText="Optional"
               />
@@ -179,8 +258,8 @@ function App() {
                   label="Year"
                   name="year"
                   type="number"
-                  value={formValues.year}
-                  onChange={handleChange}
+                  value={searchValues.year}
+                  onChange={handleSearchChange}
                   fullWidth
                   inputProps={{ min: 0 }}
                   helperText="Optional"
@@ -188,11 +267,58 @@ function App() {
                 <TextField
                   label="Category"
                   name="category"
-                  value={formValues.category}
-                  onChange={handleChange}
+                  value={searchValues.category}
+                  onChange={handleSearchChange}
                   fullWidth
                   helperText="Optional"
                 />
+              </Stack>
+              <Divider flexItem />
+              <Typography variant="subtitle1">Filter results</Typography>
+              <Stack spacing={2}>
+                <FormControl fullWidth>
+                  <InputLabel id="category-filter-label">Categories</InputLabel>
+                  <Select
+                    labelId="category-filter-label"
+                    multiple
+                    name="categories"
+                    value={filterValues.categories}
+                    onChange={handleCategoriesChange}
+                    label="Categories"
+                    renderValue={(selected) => selected.join(", ")}
+                  >
+                    {categoryOptions.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        <Checkbox
+                          checked={filterValues.categories.includes(option)}
+                        />
+                        <ListItemText primary={option} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                  <TextField
+                    label="Published from"
+                    name="yearFrom"
+                    type="number"
+                    value={filterValues.yearFrom}
+                    onChange={handleFilterChange}
+                    fullWidth
+                    inputProps={{ min: 0 }}
+                    helperText="Optional"
+                  />
+                  <TextField
+                    label="Published to"
+                    name="yearTo"
+                    type="number"
+                    value={filterValues.yearTo}
+                    onChange={handleFilterChange}
+                    fullWidth
+                    inputProps={{ min: 0 }}
+                    helperText="Optional"
+                  />
+                </Stack>
               </Stack>
               <Stack
                 direction={{ xs: "column", sm: "row" }}

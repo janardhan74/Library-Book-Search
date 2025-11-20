@@ -1,42 +1,82 @@
 [
   {
-    "title": "The Pragmatic Programmer",
-    "author": "Andrew Hunt & David Thomas",
-    "description": "Classic guide that distills pragmatic wisdom for professional software developers.",
-    "year": 1999,
+    "title": "Introduction to Algorithms",
+    "author": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+    "description": "Comprehensive textbook covering foundational algorithms and data structures used in computer science.",
+    "year": 2009,
+    "category": "Computer Science",
+    "isbn": "9780262033848"
+  },
+  {
+    "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+    "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+    "description": "Seminal book introducing common software design patterns and best practices for object-oriented design.",
+    "year": 1994,
     "category": "Programming",
-    "isbn": "9780201616224"
+    "isbn": "9780201633610"
   },
   {
-    "title": "Clean Code",
-    "author": "Robert C. Martin",
-    "description": "A handbook of agile software craftsmanship focused on writing readable, maintainable code.",
-    "year": 2008,
-    "category": "Programming",
-    "isbn": "9780132350884"
+    "title": "Deep Learning",
+    "author": "Ian Goodfellow, Yoshua Bengio, Aaron Courville",
+    "description": "Foundational text that explains deep learning algorithms, theory, and modern neural network architectures.",
+    "year": 2016,
+    "category": "Artificial Intelligence",
+    "isbn": "9780262035613"
   },
   {
-    "title": "Atomic Habits",
-    "author": "James Clear",
-    "description": "Practical strategies on building good habits and breaking bad ones through small changes.",
-    "year": 2018,
-    "category": "Productivity",
-    "isbn": "9780735211292"
-  },
-  {
-    "title": "Educated",
-    "author": "Tara Westover",
-    "description": "Memoir about growing up in a survivalist family and pursuing education against all odds.",
-    "year": 2018,
-    "category": "Memoir",
-    "isbn": "9780399590504"
-  },
-  {
-    "title": "Sapiens: A Brief History of Humankind",
-    "author": "Yuval Noah Harari",
-    "description": "Explores the history and impact of Homo sapiens from the Stone Age to modern times.",
+    "title": "The Lean Startup",
+    "author": "Eric Ries",
+    "description": "Guide to building successful startups using validated learning, rapid experimentation, and agile principles.",
     "year": 2011,
-    "category": "History",
-    "isbn": "9780062316097"
+    "category": "Business",
+    "isbn": "9780307887894"
+  },
+  {
+    "title": "The Psychology of Money",
+    "author": "Morgan Housel",
+    "description": "Insights on financial behavior and how emotions, biases, and habits influence money decisions.",
+    "year": 2020,
+    "category": "Finance",
+    "isbn": "9780857197689"
+  },
+  {
+    "title": "Thinking, Fast and Slow",
+    "author": "Daniel Kahneman",
+    "description": "Explores two systems of thinking—fast, intuitive thinking and slow, analytical thinking—and their impact on decisions.",
+    "year": 2011,
+    "category": "Psychology",
+    "isbn": "9780374533557"
+  },
+  {
+    "title": "The Alchemist",
+    "author": "Paulo Coelho",
+    "description": "A philosophical novel following a young shepherd's journey to find his personal legend and purpose.",
+    "year": 1988,
+    "category": "Fiction",
+    "isbn": "9780061122415"
+  },
+  {
+    "title": "Rich Dad Poor Dad",
+    "author": "Robert T. Kiyosaki",
+    "description": "Personal finance classic explaining the mindset differences between the wealthy and the middle class.",
+    "year": 1997,
+    "category": "Finance",
+    "isbn": "9781612680194"
+  },
+  {
+    "title": "Man's Search for Meaning",
+    "author": "Viktor E. Frankl",
+    "description": "A powerful reflection on finding meaning through suffering and resilience, based on the author's Holocaust experiences.",
+    "year": 1946,
+    "category": "Philosophy",
+    "isbn": "9780807014271"
+  },
+  {
+    "title": "The Subtle Art of Not Giving a F*ck",
+    "author": "Mark Manson",
+    "description": "A counterintuitive guide to living a good life by focusing on what truly matters.",
+    "year": 2016,
+    "category": "Self-Help",
+    "isbn": "9780062457714"
   }
 ]
