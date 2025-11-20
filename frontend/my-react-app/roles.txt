@@ -1,0 +1,24 @@
+Team Responsibilities – Library Book Search Project
+
+1. Backend Development – Geetha Reddy
+   - Implemented /books API.
+   - Added search + filters (q, author, year, category).
+   - Implemented case-insensitive substring search.
+   - Integrated controllers and routes architecture.
+
+2. Frontend Development – <Divya>
+   - Created simple UI for search and filters.
+   - Implemented search bar, dropdown filters, list view.
+   - Displayed book title, author, year, description.
+   - Showed “No Results Found” message.
+
+3. Database Integration – Anil Kumar
+   - Responsible for preparing static book list (books.json).
+   - Ensured proper data formatting (title, author, year, category, description).
+   - Provided sample dataset for testing.
+
+4. Documentation & Backend Integration Support– <Janardhan>
+   - Prepared README with setup and run steps.
+   - Documented API usage and sample queries.
+   - Wrote project overview and demo guide.
+   - Verified clarity and consistency of documentation.
