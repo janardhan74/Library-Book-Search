@@ -22,6 +22,9 @@ const initialFormValues = {
   category: "",
 };
 
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+const booksEndpoint = apiBaseUrl ? `${apiBaseUrl}/books` : "/books";
+
 function App() {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [books, setBooks] = useState([]);
@@ -54,7 +57,7 @@ function App() {
     try {
       const queryString = params.toString();
       const response = await fetch(
-        `/books${queryString ? `?${queryString}` : ""}`
+        `${booksEndpoint}${queryString ? `?${queryString}` : ""}`
       );
 
       if (!response.ok) {
@@ -169,6 +172,7 @@ function App() {
                 value={formValues.author}
                 onChange={handleChange}
                 fullWidth
+                helperText="Optional"
               />
               <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
                 <TextField
@@ -179,6 +183,7 @@ function App() {
                   onChange={handleChange}
                   fullWidth
                   inputProps={{ min: 0 }}
+                  helperText="Optional"
                 />
                 <TextField
                   label="Category"
@@ -186,6 +191,7 @@ function App() {
                   value={formValues.category}
                   onChange={handleChange}
                   fullWidth
+                  helperText="Optional"
                 />
               </Stack>
               <Stack
